@@ -2,10 +2,15 @@
 import os
 import sys
 import os.path
+import atexit
+import readline
+import rlcompleter
 from func import *
 from prog import Prog
-from execute import Execution
-# from subprocess import Popen, PIPE
+from process import Process
+from subprocess import Popen, PIPE
+
+historyPath = os.path.expanduser("~/.pyhistory")
 
 dict = ['programs', 'cmd', 'numprocs', 'umask', 'workingdir', 'autostart', 'autorestart',
         'exitcodes', 'startretries', 'starttime', 'stopsignal', 'stoptime', 'stdout', 'stderr', 'env']
@@ -14,7 +19,7 @@ cmd = ['status', 'exit', 'stop', 'start', 'restart', 'startAll', 'stopAll', 'rel
 
 progs = []
 
-threads = []
+processes = []
 
 funcdict = {
                 'status' : status,
@@ -28,11 +33,18 @@ funcdict = {
                 'help' : help
             }
 
+def save_history(historyPath=historyPath):
+    import readline
+    readline.write_history_file(historyPath)
+
 def shell():
     while (True):
         var = raw_input("$> ").strip()
         if (var in cmd):
-            funcdict[var]()
+            if (var == 'status'):
+                funcdict[var](processes)
+            else:
+                funcdict[var]()
         elif (var != ""):
             print "command not found :", var
 
@@ -90,6 +102,8 @@ def read_file(fd):
                     env = True
 
 def main():
+    if os.path.exists(historyPath):
+        readline.read_history_file(historyPath)
     if len(sys.argv) > 1 and os.path.isfile(sys.argv[1]):
         if os.access(sys.argv[1], os.R_OK):
             fd = open(sys.argv[1], 'r')
@@ -101,10 +115,11 @@ def main():
         exit()
     read_file(fd)
     for prg in progs:
-        threads.append(Execution(prg))
-    for thread in threads:
-        thread.start()
-        thread.join(1)
+        processes.append(Process(prg))
+    for proc in processes:
+        proc.run()
     shell()
 
 main()
+atexit.register(save_history)
+del os, atexit, readline, rlcompleter, save_history, historyPath
