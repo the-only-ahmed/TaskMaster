@@ -74,6 +74,7 @@ def status(processes):
 def startAll(progs):
 	for p in progs:
 		try:
+			print "start " + p.name
 			p.execute()
 			# logger.log("start prog " + p.name)
 		except Exception as e:
@@ -82,6 +83,7 @@ def startAll(progs):
 def stopAll(progs):
 	for p in progs:
 		try:
+			print "stop " + p.name
 			p.kill()
 			# logger.log("stop prog " + p.name)
 		except Exception as e:
