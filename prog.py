@@ -6,21 +6,21 @@ class Prog():
         self.name = name
         self.cmd = []
         self.numprocs = 0
-        self.umask = 0
-        self.workingdir = ""
+        self.umask = 22
+        self.workingdir = None
         self.autostart = True
         self.autorestart = "always"
-        self.exitcodes = []
+        self.exitcodes = [os.EX_OK]
         self.startretries = 0
         self.starttime = 0
-        self.stopsignal = ""
+        self.stopsignal = None
         self.stoptime = -1
         self.stdout = subprocess.PIPE
         self.stderr = subprocess.PIPE
         self.env = {}
         self.pid = 0
         self.returnCode = 0
-
+        self.pros = None
 
     def setCmd(self, arg):
         tmpList = arg.strip().split(' ')
@@ -38,7 +38,7 @@ class Prog():
         self.workingdir = arg.strip()
 
     def setAutoStart(self, arg):
-        self.autostart = arg.strip()
+        self.autostart = bool(arg.strip())
 
     def setAutoReStart(self, arg):
         self.autorestart = arg.strip()
@@ -72,3 +72,16 @@ class Prog():
 
     def setReturnCode(self, code):
         self.code = code
+
+    def execute(self):
+        self.pros = subprocess.Popen(self.cmd, env=self.env, stdout=self.stdout, stderr=self.stderr, shell=True, cwd=self.workingdir)
+        stdoutdata, stderrdata = self.pros.communicate()
+        self.setPid(self.pros.pid)
+        self.setReturnCode(self.pros.wait())
+
+    def kill(self):
+        os.kill(self.pid, 9)
+
+    def run(self):
+        if (self.autostart == True):
+            self.execute()

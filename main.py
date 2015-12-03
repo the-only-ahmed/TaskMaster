@@ -7,7 +7,6 @@ import readline
 import rlcompleter
 from func import *
 from prog import Prog
-from process import Process
 from subprocess import Popen, PIPE
 
 historyPath = os.path.expanduser("~/.pyhistory")
@@ -16,6 +15,10 @@ dict = ['programs', 'cmd', 'numprocs', 'umask', 'workingdir', 'autostart', 'auto
         'exitcodes', 'startretries', 'starttime', 'stopsignal', 'stoptime', 'stdout', 'stderr', 'env']
 
 cmd = ['status', 'exit', 'stop', 'start', 'restart', 'startAll', 'stopAll', 'reload', 'help']
+
+cmdNoArg = ['help', 'exit']
+cmd1Arg = ['status', 'startAll', 'stopAll', 'reload']
+cmd2Arg = ['stop', 'start', 'restart']
 
 progs = []
 
@@ -39,12 +42,18 @@ def save_history(historyPath=historyPath):
 
 def shell():
     while (True):
-        var = raw_input("$> ").strip()
-        if (var in cmd):
-            if (var == 'status'):
-                funcdict[var](processes)
+        var = raw_input("$> ").strip().split(' ')
+        for v in var:
+            v = v.strip()
+        if (var[0] in cmdNoArg):
+            funcdict[var[0]]()
+        elif (var[0] in cmd1Arg):
+            funcdict[var[0]](processes)
+        elif (var[0] in cmd2Arg):
+            if (len(var) != 2):
+                print "wrong argument for " + var[0]
             else:
-                funcdict[var]()
+                funcdict[var[0]](processes, var[1])
         elif (var != ""):
             print "command not found :", var
 
@@ -115,7 +124,7 @@ def main():
         exit()
     read_file(fd)
     for prg in progs:
-        processes.append(Process(prg))
+        processes.append(prg)
     for proc in processes:
         proc.run()
     shell()
