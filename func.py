@@ -106,6 +106,21 @@ def reloadConfig(old_progs):
 	new_progs.reload()
 	return new_progs
 
+def loadNewConfig(progs, file_name):
+	logger.log("loading file")
+	print "loading file"
+	if os.access(file_name, os.R_OK):
+		fd = open(file_name, 'r')
+	else:
+		print("File can't be opened")
+		logger.log("File can't be opened")
+		return
+	progs.kill_all()
+	new_progs = ProgramList(fd)
+	new_progs.launch()
+	return new_progs
+
+
 def help():
 	print "help : get the help menu"
 	print "start : start program"
@@ -116,3 +131,4 @@ def help():
 	print "startAll : start all the processes"
 	print "stopAll : stop all the processes"
 	print "reload : Reload the configuration file without stopping the main program"
+	print "load : Load new configuration file without stopping the main program"

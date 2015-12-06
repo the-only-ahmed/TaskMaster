@@ -2,11 +2,11 @@ import os
 
 from func import *
 
-cmd = ['status', 'exit', 'stop', 'start', 'restart', 'startAll', 'stopAll', 'reload', 'help']
+cmd = ['status', 'exit', 'stop', 'start', 'restart', 'startAll', 'stopAll', 'reload', 'load', 'help']
 
 cmdNoArg = ['help']
 cmd1Arg = ['exit', 'status', 'startAll', 'stopAll', 'reload']
-cmd2Arg = ['stop', 'start', 'restart']
+cmd2Arg = ['stop', 'start', 'restart', 'load']
 
 prompt = os.environ['LOGNAME'] + " > "
 
@@ -19,6 +19,7 @@ funcdict = {
                 'startAll' : startAll,
                 'stopAll' : stopAll,
                 'reload' : reloadConfig,
+                'load' : loadNewConfig,
                 'help' : help
             }
 
