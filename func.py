@@ -54,8 +54,12 @@ def restart(progs, prog_name):
 	except Exception as e:
 		print("Can't start program : ", e)
 
-def exit():
-	sys.exit()
+def exitP(progs):
+	for p in progs:
+		p.kill()
+	logger.log("END TASKMASTER")
+	print("end of taskmaster")
+	sys.exit(os.EX_OK)
 
 def status(processes):
 	print "------------------TASKMASTER------------------"
