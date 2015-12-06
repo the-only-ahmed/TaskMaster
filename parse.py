@@ -10,19 +10,23 @@ def read_file(fd):
     exit = False;
     env = False;
     for i, line in enumerate(lines):
-        if (":" not in line) and (exit == True) :
-            key_word = line.strip().split('-')
+        line = line.strip()
+        if not line:
+                continue
+        if (":" not in line) and (exit == True):
+            key_word = line.split('-')
             progs[-1].addExitCodes(key_word[1].strip())
         else :
             if exit == True:
                 exit = False
-            key_word = line.strip().split(':')
+            key_word = line.split(':')
             if env == True and key_word[0] in dict:
                 env = False
-            elif env == True and key_word[1] != "" :
+            elif env == True and key_word[1]:
                 progs[-1].addEnv(key_word[0], key_word[1])
             elif (key_word[0] not in dict) :
                 env = False
+                # print key_word[0]
                 newProg = Prog(key_word[0])
                 progs.append(newProg)
             else :
@@ -39,7 +43,7 @@ def read_file(fd):
                 elif key_word[0] == 'autorestart' :
                     progs[-1].setAutoReStart(key_word[1])
                 elif key_word[0] == 'exitcodes' :
-                    if key_word[1] != "" :
+                    if key_word[1]:
                         progs[-1].addExitCodes(key_word[1].strip())
                     else :
                         exit = True

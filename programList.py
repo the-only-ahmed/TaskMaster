@@ -40,7 +40,7 @@ class ProgramList():
 
 	def get_status(self):
 		for prog in self.lst:
-			print(prog.name, " : ", prog.get_status())
+			print prog.name + " : " + prog.get_status()
 
 	def reload(self):
 		for prog in self.lst:

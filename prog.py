@@ -3,6 +3,7 @@ import signal
 import subprocess
 import logger
 
+from process import Process
 from autoRestartEnum import AutoRestartEnum
 from processStatusEnum import ProcessStatusEnum
 
@@ -19,7 +20,7 @@ class Prog():
     """
     def __init__(self, name):
         self.name = name
-        self.cmd = []
+        self.cmd = False
         self.numprocs = 1
         self.umask = 22
         self.workingdir = None
@@ -62,10 +63,11 @@ class Prog():
         raise UnknowSignalError(s)
 
     def setCmd(self, arg):
-        tmpList = arg.strip().split(' ')
-        for tmp in tmpList:
-            tmp = ''.join(e for e in tmp if (e != '\"' and e != '\''))
-            self.cmd.append(tmp)
+        # tmpList = arg.strip().split(' ')
+        # for tmp in tmpList:
+        #     tmp = ''.join(e for e in tmp if (e != '\"' and e != '\''))
+        #     self.cmd.append(tmp)
+        self.cmd = arg.strip()
 
     def setProcs(self, arg):
         self.numprocs = int(arg)
@@ -101,10 +103,10 @@ class Prog():
         self.stoptime = int(arg)
 
     def setStdOut(self, filename):
-        self.stdout = open(filename.strip(), 'w+')
+        self.stdout = filename
 
     def setStdErr(self, filename):
-        self.stderr = open(filename.strip(), 'w+')
+        self.stderr = filename
 
     def addEnv(self, key, value):
         self.env[key.strip()] = value.strip()
@@ -130,7 +132,13 @@ class Prog():
     def relaunch(self):
         self.execute()
 
+    def check_pros(self):
+        if (len(self.processes) < self.numprocs):
+            for i in range(len(self.processes), self.numprocs):
+                self.processes.append(Process(self.name, self.cmd))
+
     def execute(self):
+        self.check_pros()
         logger.log("execute " + self.name)
         new_env = self.get_expanded_env()
         for proc in self.processes:

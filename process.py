@@ -1,10 +1,16 @@
+import os
 import logger
+import subprocess
+import datetime
+import signal
 
 from processStatusEnum import ProcessStatusEnum
+from autoRestartEnum import AutoRestartEnum
 
-Class Process():
+class Process():
 
 	popen = None
+	kill_by_user = False
 
 	def __init__(self, name, cmd):
 		self.name = name
@@ -16,6 +22,7 @@ Class Process():
 		self.env = nenv
 		self.workingdir = workingdir
 		self.umask = umask
+		self.nb_start_retries = 0
 
 	def execute(self):
 		"""Require that set_execution_vars has already been called"""
@@ -103,3 +110,45 @@ Class Process():
 			return ProcessStatusEnum.STOP_OK
 		else:
 			return ProcessStatusEnum.STOP_KO
+
+	def check_pid_is_alive(self, pid):
+		try:
+			os.kill(pid, 0)
+		except OSError:
+			return False
+		else:
+			return True
+
+	def open_standard_files(self, file_name):
+		if file_name == None:
+			return
+		try:
+			fd = open(file_name, "a+")
+			return fd
+		except Exception as e:
+			print("Stantard file for {0} can't be open because {1}.".
+					format(self.name, e))
+			logger.log("Stantard file for {0} can't be open because {1}.".
+					format(self.name, e))
+			return None
+
+	def kill(self, stopsignal):
+		kill_by_user = True
+		if self.popen and not self.popen.poll():
+			if self.check_pid_is_alive(self.popen.pid):
+				# print("kill ", Process.print_signal(stopsignal), stopsignal, " pid ", self.popen.pid)
+				os.kill(self.popen.pid, stopsignal)
+				logger.log("process in prog " + self.name + " has been killed")
+				self.closetime = datetime.datetime.now()
+
+	def force_kill_if_needed(self, stoptime):
+		if not hasattr(self, "closetime") or self.closetime == None:
+			return
+		if not self.check_pid_is_alive(self.popen.pid) or \
+				not hasattr(self, "closetime") or self.closetime == None or \
+				stoptime == None:
+			return
+		diff = (datetime.datetime.now() - self.closetime)
+		if diff > datetime.timedelta(seconds = stoptime):
+			logger.log("force kill of process for prog " + self.name)
+			os.kill(self.popen.pid, 9)

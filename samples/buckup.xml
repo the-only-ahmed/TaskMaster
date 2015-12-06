@@ -14,7 +14,7 @@ programs:
 		stopsignal: TERM
 		stoptime: 10
 		stdout: AHMED
-		stderr: /tmp/nginx.stderr
+		stderr: nginx.stderr
 		env:
 			STARTED_BY: taskmaster
 			ANSWER: 42
