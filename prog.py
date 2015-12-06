@@ -70,10 +70,10 @@ class Prog():
         self.cmd = arg.strip()
 
     def setProcs(self, arg):
-        self.numprocs = int(arg)
+        self.numprocs = int(arg.strip())
 
     def setMask(self, arg):
-        self.umask = int(arg)
+        self.umask = int(arg.strip())
 
     def setWorkingDir(self, arg):
         self.workingdir = arg.strip()
@@ -85,13 +85,13 @@ class Prog():
         self.autorestart = AutoRestartEnum.fromstr(arg.strip())
 
     def addExitCodes(self, arg):
-        self.exitcodes.append(int(arg))
+        self.exitcodes.append(int(arg.strip()))
 
     def setStartRetries(self, arg):
-        self.startretries = int(arg)
+        self.startretries = int(arg.strip())
 
     def setStartTime(self, arg):
-        self.starttime = int(arg)
+        self.starttime = int(arg.strip())
 
     def setStopSignal(self, arg):
         if type(arg) == str:
@@ -103,10 +103,10 @@ class Prog():
         self.stoptime = int(arg)
 
     def setStdOut(self, filename):
-        self.stdout = filename
+        self.stdout = filename.strip()
 
     def setStdErr(self, filename):
-        self.stderr = filename
+        self.stderr = filename.strip()
 
     def addEnv(self, key, value):
         self.env[key.strip()] = value.strip()
