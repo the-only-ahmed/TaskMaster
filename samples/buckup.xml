@@ -1,6 +1,6 @@
 programs:
 	nginx:
-		cmd: "ls"
+		cmd: "sleep 4"
 		numprocs: 1
 		umask: 022
 		workingdir: /tmp

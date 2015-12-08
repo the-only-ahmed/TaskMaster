@@ -7,6 +7,13 @@ from process import Process
 from autoRestartEnum import AutoRestartEnum
 from processStatusEnum import ProcessStatusEnum
 
+class NoCmdException(Exception):
+    def __init__(self, name):
+        self.name = name
+
+    def __str__(self):
+        return "Program " + self.name + " doesn't have command to execute"
+
 class UnknowSignalError(Exception):
     def __init__(self, _name):
         self.name = _name
@@ -18,26 +25,38 @@ class Prog():
     """
     Init Program
     """
-    def __init__(self, name):
+
+    numprocs = 1
+    cmd = False
+    umask = 22
+    workingdir = None
+    autostart = True
+    autorestart = AutoRestartEnum.unexpected
+    exitcodes = [os.EX_OK] # a revoir
+    startretries = 0
+    starttime = None
+    stopsignal = signal.SIGTERM
+    stoptime = None
+    stdout = None
+    stderr = None
+    env = {}
+    pid = 0
+    returnCode = 0
+    pros = None
+    processes = []
+
+    def __init__(self, name, dic):
         self.name = name
-        self.cmd = False
-        self.numprocs = 1
-        self.umask = 22
-        self.workingdir = None
-        self.autostart = True
-        self.autorestart = AutoRestartEnum.unexpected
-        self.exitcodes = [os.EX_OK]
-        self.startretries = 0
-        self.starttime = None
-        self.stopsignal = signal.SIGTERM
-        self.stoptime = None
-        self.stdout = None
-        self.stderr = None
-        self.env = {}
-        self.pid = 0
-        self.returnCode = 0
-        self.pros = None
-        self.processes = []
+        for k, v in dic.items():
+            setattr(self, k, v)
+        if not self.cmd:
+            raise NoCmdException(name)
+            return
+        self.autorestart = AutoRestartEnum.fromstr(self.autorestart)
+        if type(self.stopsignal) == str:
+            self.stopsignal = Program.signal_from_str(self.stopsignal)
+        for i in range(0, self.numprocs):
+            self.processes.append(Process(self.name, self.cmd))
 
     """
     Set Program Attributes
