@@ -28,10 +28,13 @@ def thread_check_progs():
     all the progs
     """
     while True:
-        progs_lock.acquire(True)
-        progs.check()
-        progs_lock.release()
-        time.sleep(0.01)
+        try:
+            progs_lock.acquire(True)
+            progs.check()
+            progs_lock.release()
+            time.sleep(0.01)
+        except:
+            exit()
 
 def check_fileExistance():
     if os.path.exists(historyPath):
