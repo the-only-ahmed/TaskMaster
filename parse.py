@@ -21,7 +21,6 @@ def read_file(fd):
             return False
         for k, v in config.items():
             try:
-#                print (k, v)
                 prog = Prog(k, v)
                 progs.append(prog)
             except Exception as e:

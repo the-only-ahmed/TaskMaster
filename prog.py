@@ -32,7 +32,7 @@ class Prog():
     workingdir = None
     autostart = True
     autorestart = AutoRestartEnum.unexpected
-    exitcodes = [os.EX_OK] # a revoir
+    exitcodes = os.EX_OK # a revoir
     startretries = 0
     starttime = None
     stopsignal = signal.SIGTERM
@@ -54,7 +54,7 @@ class Prog():
             return
         self.autorestart = AutoRestartEnum.fromstr(self.autorestart)
         if type(self.stopsignal) == str:
-            self.stopsignal = Program.signal_from_str(self.stopsignal)
+            self.stopsignal = Prog.signal_from_str(self.stopsignal)
         for i in range(0, self.numprocs):
             self.processes.append(Process(self.name, self.cmd))
 
