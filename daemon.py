@@ -6,6 +6,9 @@ from colors import Scolors
 PID_FILE = "/tmp/taskmaster.pid"
 DEV_NULL = "/dev/null"
 
+def delPid():
+    os.remove(PID_FILE)
+
 def startDaemon():
     try:
         pid = os.fork()
@@ -14,6 +17,7 @@ def startDaemon():
             sys.exit(0)
     except OSError, e:
         sys.stderr.write("fork #1 failed: %d (%s)\n" % (e.errno, e.strerror))
+        logger.log("fork #1 failed: %d (%s)\n" % (e.errno, e.strerror))
         sys.exit(1)
 
         # decouple from parent environment
@@ -29,6 +33,7 @@ def startDaemon():
             sys.exit(0)
     except OSError, e:
         sys.stderr.write("fork #2 failed: %d (%s)\n" % (e.errno, e.strerror))
+        logger.log("fork #2 failed: %d (%s)\n" % (e.errno, e.strerror))
         sys.exit(1)
 
     # redirect standard file descriptors
@@ -60,6 +65,7 @@ def daemonize():
     if pid:
         message = Scolors.RED + "pidfile %s already exist. Tasmaster already running ?\n" + Scolors.ENDC
         sys.stderr.write(message % PID_FILE)
+        logger.log(message % PID_FILE)
         sys.exit(1)
     startDaemon()
 
