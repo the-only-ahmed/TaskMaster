@@ -2,6 +2,7 @@ import os
 import sys
 
 PID_FILE = "/tmp/taskmaster.pid"
+DEV_NULL = "/dev/null"
 
 def startDaemon():
     try:
