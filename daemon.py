@@ -1,3 +1,6 @@
+import os
+import sys
+
 PID_FILE = "/tmp/taskmaster.pid"
 
 def startDaemon():
