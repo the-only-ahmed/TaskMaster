@@ -1,5 +1,6 @@
 import os
 
+from colors import Scolors
 from func import *
 
 cmd = ['status', 'exit', 'stop', 'start', 'restart', 'startAll', 'stopAll', 'reload', 'load', 'help']

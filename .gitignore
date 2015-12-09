@@ -1,5 +1,6 @@
 *.pyc
 *.txt
+.*.yaml
 confs/
 tmp/
 a.out

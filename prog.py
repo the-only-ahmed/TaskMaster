@@ -162,7 +162,7 @@ class Prog():
         new_env = self.get_expanded_env()
         for proc in self.processes:
             proc.set_execution_vars(self.stdout, self.stderr, new_env, \
-                    self.workingdir, "umask {:03d};".format(self.umask))
+                    self.workingdir, "{:03d}".format(self.umask))
             proc.execute()
         # self.pros = subprocess.Popen(self.cmd, env=self.env, stdout=self.stdout, stderr=self.stderr, shell=True, cwd=self.workingdir)
         # stdoutdata, stderrdata = self.pros.communicate()

@@ -11,17 +11,19 @@ class Process():
 
 	popen = None
 	kill_by_user = False
+	umask = 022
 
 	def __init__(self, name, cmd):
 		self.name = name
 		self.cmd = cmd
+		self.oldmask = os.umask(self.umask)
 
 	def set_execution_vars(self, stdout, stderr, nenv, workingdir, umask):
 		self.stdout = stdout
 		self.stderr = stderr
 		self.env = nenv
 		self.workingdir = workingdir
-		self.umask = umask
+		self.umask = int(umask)
 		self.nb_start_retries = 0
 
 	def execute(self):
@@ -32,10 +34,11 @@ class Process():
 			stdoutf = self.open_standard_files(self.stdout)
 			stderrf = self.open_standard_files(self.stderr)
 			# self.cmd = self.umask + self.cmd
-			os.mask(self.umask)
+			os.umask(self.umask)
 			self.popen = subprocess.Popen(self.cmd,
 					stdout = stdoutf, stderr = stderrf,
 					env = self.env, shell = True, cwd = self.workingdir)
+			os.umask(self.oldmask)
 			self.starttime = datetime.datetime.now()
 			self.closetime = None
 		except Exception as e:
