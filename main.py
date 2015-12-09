@@ -17,6 +17,7 @@ from programList import ProgramList
 interf = None
 progs_lock = None
 progs = None
+fd = None
 
 def signal_handler(signal, frame):
     if interf:
@@ -56,11 +57,12 @@ def main():
     parser.add_argument("-c", "--colors", help="add colors to shell", action="store_true")
     parser.add_argument("-f", "--file", help="add configuration file", nargs=1)
     args = parser.parse_args()
-    #fd = check_fileExistance(args.file)
-    #global progs
-    print args.file
-    #progs = ProgramList(fd)
-    #progs.launch()
+    if (args.file != None)
+        fd = check_fileExistance(args.file[0])
+    if (fd != None)
+        global progs
+        progs = ProgramList(fd)
+        progs.launch()
 
     print "BEGIN TASKMASTER"
     logger.log("BEGIN TASKMASTER")
