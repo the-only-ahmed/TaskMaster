@@ -22,20 +22,20 @@ class ProgramList():
 		for p in self.lst:
 			try:
 				p.execute()
-				print colorSuc + "start " + p.name + colorEnd
+				print self.colorSuc + "start " + p.name + self.colorEnd
 				logger.log("start prog " + p.name)
 			except Exception as e:
-				print(colorErr + "Can't start program : ", e + colorEnd)
+				print(self.colorErr + "Can't start program : ", e + self.colorEnd)
 				logger.log("Can't start program : ", e)
 
 	def kill_all(self):
 		for p in self.lst:
 			try:
 				p.kill()
-				print colorSuc + "stop " + p.name + colorEnd
+				print self.colorSuc + "stop " + p.name + self.colorEnd
 				logger.log("stop " + p.name)
 			except Exception as e:
-				print(colorErr + "Can't stop program : ", e + colorEnd)
+				print(self.colorErr + "Can't stop program : ", e + self.colorEnd)
 				logger.log("Can't stop program : ", e)
 
 	def check(self):
