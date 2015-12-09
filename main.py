@@ -17,7 +17,6 @@ from programList import ProgramList
 interf = None
 progs_lock = None
 progs = None
-fd = None
 
 def signal_handler(signal, frame):
     if interf:
@@ -32,7 +31,8 @@ def thread_check_progs():
     while True:
         try:
             progs_lock.acquire(True)
-            progs.check()
+            if progs is not None:
+		progs.check()
             progs_lock.release()
             time.sleep(0.01)
         except:
@@ -54,12 +54,13 @@ def check_fileExistance(path):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("-c", "--colors", help="add colors to shell", action="store_true")
+    parser.add_argument("-c", "--colors", help="add colors to shell", nargs=1)
     parser.add_argument("-f", "--file", help="add configuration file", nargs=1)
     args = parser.parse_args()
-    if (args.file != None)
-        fd = check_fileExistance(args.file[0])
-    if (fd != None)
+    fd = None
+    if (args.file != None):
+        fd = check_fileExistance(args.file[0])    
+    if (fd is not None):
         global progs
         progs = ProgramList(fd)
         progs.launch()
@@ -78,7 +79,7 @@ def main():
     t = threading.Thread(target = thread_check_progs)
     t.daemon = True
     t.start()
-    #shell(progs)
+    shell(progs, args.colors)
 
 main()
 atexit.register(save_history)

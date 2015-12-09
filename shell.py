@@ -26,14 +26,20 @@ funcdict = {
 
 historyPath = os.path.expanduser("~/.pyhistory")
 
+color = Scolors.ENDC
+endCol = Scolors.ENDC
+
 def save_history(historyPath=historyPath):
     import readline
     readline.write_history_file(historyPath)
 
-def shell(progs):
+def shell(progs, colors):
+    if colors is not None:
+	global color
+	color = Scolors.getColor(colors[0])
     while (True):
         try:
-            var = raw_input(prompt).strip().split(' ')
+            var = raw_input(color + prompt + endCol).strip().split(' ')
             for v in var:
                 v = v.strip()
             if (var[0] in cmdNoArg):
@@ -47,5 +53,6 @@ def shell(progs):
                     funcdict[var[0]](progs, var[1])
             elif (len(var) > 0 and var[0] != ""):
                 print "command not found :", var[0]
-        except:
+        except Exception as e:
+            print ("exception ", e)
             exitP(progs)

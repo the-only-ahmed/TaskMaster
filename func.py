@@ -73,7 +73,8 @@ def restart(progs, prog_name):
 		logger.log("Can't restart program : ", e)
 
 def exitP(progs):
-	progs.kill_all()
+	if progs is not None:
+		progs.kill_all()
 	logger.log("END TaskMaster")
 	print("end of TaskMaster")
 	sys.exit(os.EX_OK)
@@ -81,17 +82,34 @@ def exitP(progs):
 def status(programs):
 	print "------------------TASKMASTER------------------"
 	logger.log("------------------TASKMASTER------------------")
-	programs.get_status()
+	if programs is not None:
+		programs.get_status()
+	else:
+		logger.log("no config file loaded")
+		print "NO CONFIG FILE LOADED"	
 	logger.log("------------------TASKMASTER------------------")
 	print "------------------TASKMASTER------------------"
 
 def startAll(progs):
-	progs.start_all()
+	if progs is not None:
+		progs.start_all()
+	else:
+		logger.log("no config file loaded")
+		print "NO CONFIG FILE LOADED"
 
 def stopAll(progs):
-	progs.kill_all()
+	if progs is not None:
+		progs.kill_all()
+	else:
+		logger.log("no config file loaded")
+		print "NO CONFIG FILE LOADED"
 
 def reloadConfig(old_progs):
+	if progs is None:
+		logger.log("no config file loaded")
+		print "NO CONFIG FILE LOADED"
+		return None
+		
 	logger.log("TaskMaster reloaded")
 	print "TaskMaster reloaded"
 	new_progs = ProgramList(old_progs.fd)
@@ -115,7 +133,8 @@ def loadNewConfig(progs, file_name):
 		print("File can't be opened")
 		logger.log("File can't be opened")
 		return
-	progs.kill_all()
+	if progs is not None:
+		progs.kill_all()
 	new_progs = ProgramList(fd)
 	new_progs.launch()
 	return new_progs

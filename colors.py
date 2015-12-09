@@ -1,4 +1,39 @@
+import logger
+
 class Scolors():
+    @classmethod
+    def getColor(x, s):
+	if type(s) is Scolors:
+		return s
+	elif s == "pink":
+		return Scolors.PINK;
+	elif s == "blue":
+		return Scolors.BLUE
+	elif s == "cyan":
+		return Scolors.CYAN
+	elif s == "green":
+		return Scolors.GREEN
+	elif s == "purple":
+		return Scolors.PURPLE
+	elif s == "red":
+		return Scolors.RED
+	elif s == "yellow":
+		return Scolors.YELLOW
+	elif s == "magenta":
+		return Scolors.MAGENTA
+	elif s == "grey":
+		return Scolors.GREY
+	elif s == "bold":
+		return Scolors.BOLD
+	elif s == "underline":
+		return Scolors.UNDERLINE
+	elif s == "endc":
+		return Scolors.ENDC
+	else:
+		print Scolors.RED + "Wrong Color" + Scolors.ENDC
+		logger.log("wrong color")
+		return Scolors.ENDC
+
     PINK = '\033[95m'
     BLUE = '\033[94m'
     CYAN = '\033[36m'
