@@ -86,7 +86,7 @@ def status(programs):
 		programs.get_status()
 	else:
 		logger.log("no config file loaded")
-		print "NO CONFIG FILE LOADED"	
+		print "NO CONFIG FILE LOADED"
 	logger.log("------------------TASKMASTER------------------")
 	print "------------------TASKMASTER------------------"
 
@@ -109,7 +109,7 @@ def reloadConfig(old_progs):
 		logger.log("no config file loaded")
 		print "NO CONFIG FILE LOADED"
 		return None
-		
+
 	logger.log("TaskMaster reloaded")
 	print "TaskMaster reloaded"
 	new_progs = ProgramList(old_progs.fd)
@@ -135,10 +135,8 @@ def loadNewConfig(progs, file_name):
 		return
 	if progs is not None:
 		progs.kill_all()
-	new_progs = ProgramList(fd)
-	new_progs.launch()
-	return new_progs
-
+	progs = ProgramList(fd)
+	progs.launch()
 
 def help():
 	print "help : get the help menu"
