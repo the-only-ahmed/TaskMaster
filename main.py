@@ -66,11 +66,11 @@ def main():
     if args.stop:
         taskMasterStop()
         return
-    if args.daemon:
-        daemonize()
     if (args.file != None):
         fd = check_fileExistance(args.file[0])
     if (fd is not None):
+        if args.daemon:
+            daemonize()
         global progs
         progs = ProgramList(fd)
         progs.launch()
