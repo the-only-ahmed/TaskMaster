@@ -107,7 +107,9 @@ class Process():
 			return ProcessStatusEnum.NOT_LAUNCH
 		if self.popen.poll() == None:
 			return ProcessStatusEnum.RUNNING
-		if self.return_code_is_allowed(self.popen.poll(), exitcodes):
+		streamdata = self.popen.communicate()[0]
+		rc = self.popen.returncode
+		if self.return_code_is_allowed(rc, exitcodes):
 			return ProcessStatusEnum.STOP_OK
 		else:
 			return ProcessStatusEnum.STOP_KO
