@@ -1,0 +1,80 @@
+sleep:
+    cmd: "sleep 4"
+    autostart: true
+    autorestart: unexpected
+    starttime: 0
+    startretries: 0
+    stopsignal: TERM
+    stoptime: 0
+    numprocs: 1
+    exitcodes:
+        - 0
+        - 1
+        - -1
+    stdout: tmp/sleep.log
+    stderr: tmp/sleep.error.log
+    env:
+        STARTED_BY: taskmaster
+        ANSWER: 42
+    workingdir: tmp
+    umask: 022
+ls:
+    cmd: "ls "
+    autostart: true
+    autorestart: unexpected
+    starttime: 0
+    startretries: 0
+    stopsignal: TERM
+    stoptime: 10
+    numprocs: 1
+    exitcodes:
+        - 0
+        - 1
+        - -1
+    stdout: tmp/ls.log
+    stderr: tmp/ls.error.log
+    env:
+        STARTED_BY: taskmaster
+        ANSWER: 42
+    workingdir: tmp
+    umask: 022
+main:
+    cmd: "~/TaskMaster/samples/a.out"
+    autostart: true
+    autorestart: unexpected
+    starttime: 0
+    startretries: 0
+    stopsignal: TERM
+    stoptime: 0
+    numprocs: 1
+    exitcodes:
+        - 0
+        - 1
+        - -1
+    stdout: tmp/main.log
+    stderr: tmp/main.error.log
+    env:
+        STARTED_BY: taskmaster
+        ANSWER: 42
+    workingdir: tmp
+    umask: 000
+env:
+    cmd: "env"
+    autostart: true
+    autorestart: unexpected
+    starttime: 0
+    startretries: 0
+    stopsignal: TERM
+    stoptime: 0
+    numprocs: 1
+    exitcodes:
+        - 0
+        - 1
+        - -1
+    stdout: tmp/env.log
+    stderr: tmp/env.error.log
+    env:
+        STARTED_BY: taskmaster
+        ANSWER: 42
+    workingdir: tmp
+    umask: 022

@@ -43,7 +43,6 @@ class Prog():
     pid = 0
     returnCode = 0
     pros = None
-    processes = []
 
     def __init__(self, name, dic):
         self.name = name
@@ -55,6 +54,7 @@ class Prog():
         self.autorestart = AutoRestartEnum.fromstr(self.autorestart)
         if type(self.stopsignal) == str:
             self.stopsignal = Prog.signal_from_str(self.stopsignal)
+    	self.processes = []
         for i in range(0, self.numprocs):
             self.processes.append(Process(self.name, self.cmd))
 
@@ -80,61 +80,6 @@ class Prog():
         if s == "USR2":
             return signal.SIGUSR2
         raise UnknowSignalError(s)
-
-    def setCmd(self, arg):
-        # tmpList = arg.strip().split(' ')
-        # for tmp in tmpList:
-        #     tmp = ''.join(e for e in tmp if (e != '\"' and e != '\''))
-        #     self.cmd.append(tmp)
-        self.cmd = arg.strip()
-
-    def setProcs(self, arg):
-        self.numprocs = int(arg.strip())
-
-    def setMask(self, arg):
-        self.umask = int(arg.strip())
-
-    def setWorkingDir(self, arg):
-        self.workingdir = arg.strip()
-
-    def setAutoStart(self, arg):
-        self.autostart = bool(arg.strip())
-
-    def setAutoReStart(self, arg):
-        self.autorestart = AutoRestartEnum.fromstr(arg.strip())
-
-    def addExitCodes(self, arg):
-        self.exitcodes.append(int(arg.strip()))
-
-    def setStartRetries(self, arg):
-        self.startretries = int(arg.strip())
-
-    def setStartTime(self, arg):
-        self.starttime = int(arg.strip())
-
-    def setStopSignal(self, arg):
-        if type(arg) == str:
-            self.stopsignal = Prog.signal_from_str(arg.strip())
-        else:
-            self.stopsignal = arg
-
-    def setStopTime(self, arg):
-        self.stoptime = int(arg)
-
-    def setStdOut(self, filename):
-        self.stdout = filename.strip()
-
-    def setStdErr(self, filename):
-        self.stderr = filename.strip()
-
-    def addEnv(self, key, value):
-        self.env[key.strip()] = value.strip()
-
-    def setPid(self, pid):
-        self.pid = pid
-
-    def setReturnCode(self, code):
-        self.code = code
 
     """
     Program Methodes
@@ -164,10 +109,6 @@ class Prog():
             proc.set_execution_vars(self.stdout, self.stderr, new_env, \
                     self.workingdir, "{:03d}".format(self.umask))
             proc.execute()
-        # self.pros = subprocess.Popen(self.cmd, env=self.env, stdout=self.stdout, stderr=self.stderr, shell=True, cwd=self.workingdir)
-        # stdoutdata, stderrdata = self.pros.communicate()
-        # self.setPid(self.pros.pid)
-        # self.setReturnCode(self.pros.wait())
 
     def check(self):
         for proc in self.processes:
@@ -177,7 +118,6 @@ class Prog():
     def kill(self):
         for proc in self.processes:
             proc.kill(self.stopsignal)
-        # os.kill(self.pid, 9)
 
     def run(self):
         if (self.autostart == True):
