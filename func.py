@@ -2,12 +2,17 @@ import os
 import sys
 import logger
 
+from colors import Scolors
 from programList import ProgramList
 from processStatusEnum import ProcessStatusEnum
 
+colorSuc = Scolors.GREEN
+colorErr = Scolors.RED
+colorEnd = Scolors.ENDC
+
 def start(progs, prog_name):
 	if (progs == None or prog_name == None):
-		print "program name or configFile is empty"
+		print colorSuc + "program name or configFile is empty" + colorEnd
 		logger.log("program name or configFile is empty")
 		return
 
@@ -28,7 +33,7 @@ def start(progs, prog_name):
 
 def stop(progs, prog_name):
 	if progs == None or prog_name == None:
-		print "program name or configFile is empty"
+		print colorErr + "program name or configFile is empty" + colorEnd
 		logger.log("program name or configFile is empty")
 		return
 
@@ -53,7 +58,7 @@ def stop(progs, prog_name):
 
 def restart(progs, prog_name):
 	if progs == None or prog_name == None:
-		print "program name or configFile is empty"
+		print colorSuc + "program name or configFile is empty" + colorEnd
 		logger.log("program name or configFile is empty")
 		return
 	prog = progs.get_by_name(prog_name)
@@ -76,7 +81,7 @@ def exitP(progs):
 	if progs is not None:
 		progs.kill_all()
 	logger.log("END TaskMaster")
-	print("end of TaskMaster")
+	print(Scolors.YELLOW + "end of TaskMaster" + colorEnd)
 	sys.exit(os.EX_OK)
 
 def status(programs):

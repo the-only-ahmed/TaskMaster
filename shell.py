@@ -26,6 +26,9 @@ funcdict = {
 
 historyPath = os.path.expanduser("~/.pyhistory")
 
+colorSuc = Scolors.GREEN
+colorErr = Scolors.RED
+
 color = Scolors.ENDC
 endCol = Scolors.ENDC
 
@@ -51,14 +54,16 @@ def shell(progs, colors):
                     progs = funcdict[var[0]](progs)
             elif (var[0] in cmd2Arg):
                 if (len(var) != 2):
-                    print "wrong argument for " + var[0]
+                    print colorErr + "wrong argument for " + var[0] + endCol
+                    logger.log("wrong argument for " + var[0])
                 else:
                     if (var[0] != "load"):
                         funcdict[var[0]](progs, var[1])
                     else:
                         progs = funcdict[var[0]](progs, var[1])
             elif (len(var) > 0 and var[0] != ""):
-                print "command not found :", var[0]
+                print colorErr + "command not found :" + var[0] + endCol
+                logger.log("command not found :" + var[0])
         except Exception as e:
-            print ("exception ", e)
+            logger.log("shell Exception : ", e)
             exitP(progs)

@@ -1,38 +1,41 @@
 import logger
 
+from colors import Scolors
 from parse import *
 
 class ProgramList():
 
 	lst = []
+	colorErr = Scolors.RED
+	colorSuc = Scolors.GREEN
+	colorEnd = Scolors.ENDC
 
 	def __init__(self, fd):
 		self.lst = read_file(fd)
 		self.fd = fd
 
 	def launch(self):
-		print "here"
 		for prog in self.lst:
 			prog.run()
 
 	def start_all(self):
 		for p in self.lst:
 			try:
-				print "start " + p.name
 				p.execute()
+				print colorSuc + "start " + p.name + colorEnd
 				logger.log("start prog " + p.name)
 			except Exception as e:
-				print("Can't start program : ", e)
+				print(colorErr + "Can't start program : ", e + colorEnd)
 				logger.log("Can't start program : ", e)
 
 	def kill_all(self):
 		for p in self.lst:
 			try:
-				print "stop " + p.name
-				logger.log("stop " + p.name)
 				p.kill()
+				print colorSuc + "stop " + p.name + colorEnd
+				logger.log("stop " + p.name)
 			except Exception as e:
-				print("Can't stop program : ", e)
+				print(colorErr + "Can't stop program : ", e + colorEnd)
 				logger.log("Can't stop program : ", e)
 
 	def check(self):
