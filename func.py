@@ -58,7 +58,7 @@ def stop(progs, prog_name):
 
 def restart(progs, prog_name):
 	if progs == None or prog_name == None:
-		print colorSuc + "program name or configFile is empty" + colorEnd
+		print colorErr + "program name or configFile is empty" + colorEnd
 		logger.log("program name or configFile is empty")
 		return
 	prog = progs.get_by_name(prog_name)
