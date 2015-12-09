@@ -31,7 +31,8 @@ class Process():
 		try:
 			stdoutf = self.open_standard_files(self.stdout)
 			stderrf = self.open_standard_files(self.stderr)
-			self.cmd = self.umask + self.cmd
+			# self.cmd = self.umask + self.cmd
+			os.mask(self.umask)
 			self.popen = subprocess.Popen(self.cmd,
 					stdout = stdoutf, stderr = stderrf,
 					env = self.env, shell = True, cwd = self.workingdir)
