@@ -45,12 +45,18 @@ def shell(progs, colors):
             if (var[0] in cmdNoArg):
                 funcdict[var[0]]()
             elif (var[0] in cmd1Arg):
-                funcdict[var[0]](progs)
+                if (var[0] != "reload"):
+                    funcdict[var[0]](progs)
+                else:
+                    progs = funcdict[var[0]](progs)
             elif (var[0] in cmd2Arg):
                 if (len(var) != 2):
                     print "wrong argument for " + var[0]
                 else:
-                    funcdict[var[0]](progs, var[1])
+                    if (var[0] != "load"):
+                        funcdict[var[0]](progs, var[1])
+                    else:
+                        progs = funcdict[var[0]](progs, var[1])
             elif (len(var) > 0 and var[0] != ""):
                 print "command not found :", var[0]
         except Exception as e:

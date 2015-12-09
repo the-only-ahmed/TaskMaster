@@ -137,6 +137,7 @@ def loadNewConfig(progs, file_name):
 		progs.kill_all()
 	progs = ProgramList(fd)
 	progs.launch()
+	return progs
 
 def help():
 	print "help : get the help menu"

@@ -11,6 +11,7 @@ class ProgramList():
 		self.fd = fd
 
 	def launch(self):
+		print "here"
 		for prog in self.lst:
 			prog.run()
 
