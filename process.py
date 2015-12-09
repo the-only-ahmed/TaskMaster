@@ -81,7 +81,6 @@ class Process():
 	def return_code_is_allowed(self, rc, exitcodes):
 		# if exitcodes is only one code
 		# print(exitcodes, " ==? ", rc, " => ", rc == exitcodes)
-		print ("exit code ", rc)
 		if not type(exitcodes) is list:
 			return rc == exitcodes
 		# if exitcodes is a list of exitcode
