@@ -9,6 +9,7 @@ import logger
 import signal
 import threading
 import time
+import argparse
 
 from shell import *
 from programList import ProgramList
@@ -36,35 +37,37 @@ def thread_check_progs():
         except:
             exit()
 
-def check_fileExistance():
-    if os.path.exists(historyPath):
-        readline.read_history_file(historyPath)
-    if len(sys.argv) > 1 and os.path.isfile(sys.argv[1]):
-        if os.access(sys.argv[1], os.R_OK):
-            fd = open(sys.argv[1], 'r')
+def check_fileExistance(path):
+    if os.path.isfile(path):
+        if os.access(path, os.R_OK):
+            fd = open(path, 'r')
             return fd
         else:
             print("File can't be opened")
             logger.log("File can't be opened")
-            exit()
+            return
     else:
         print("File doesn't exist")
         logger.log("File doesn't exist")
-        exit()
+        return
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("-d", "--daemon", help="run program as daemon", action="store_true")
+    parser.add_argument("-c", "--colors", help="add colors to shell", action="store_true")
+    parser.add_argument("-f", "--file", help="add configuration file", nargs=1)
     args = parser.parse_args()
-    # if args.start or (not args.stop and not args.restart):
+
+	fd = check_fileExistance(args.file)
+	global progs
+	progs = ProgramList(fd)
+	progs.launch()
+
     print "BEGIN TASKMASTER"
     logger.log("BEGIN TASKMASTER")
     signal.signal(signal.SIGINT, signal_handler)
-    fd = check_fileExistance()
 
-    global progs
-    progs = ProgramList(fd)
-    progs.launch()
+    if os.path.exists(historyPath):
+        readline.read_history_file(historyPath)
 
     global progs_lock
     progs_lock = threading.Lock()
@@ -73,7 +76,7 @@ def main():
     t = threading.Thread(target = thread_check_progs)
     t.daemon = True
     t.start()
-    shell(progs)
+    #shell(progs)
 
 main()
 atexit.register(save_history)
