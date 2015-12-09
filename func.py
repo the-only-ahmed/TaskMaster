@@ -85,7 +85,7 @@ def exitP(progs):
 	sys.exit(os.EX_OK)
 
 def status(programs):
-	print "------------------TASKMASTER------------------"
+	print Scolors.CYAN + "------------------TASKMASTER------------------" + colorEnd
 	logger.log("------------------TASKMASTER------------------")
 	if programs is not None:
 		programs.get_status()
@@ -93,7 +93,7 @@ def status(programs):
 		logger.log("no config file loaded")
 		print "NO CONFIG FILE LOADED"
 	logger.log("------------------TASKMASTER------------------")
-	print "------------------TASKMASTER------------------"
+	print Scolors.CYAN + "------------------TASKMASTER------------------" + colorEnd
 
 def startAll(progs):
 	if progs is not None:
@@ -110,7 +110,7 @@ def stopAll(progs):
 		print "NO CONFIG FILE LOADED"
 
 def reloadConfig(old_progs):
-	if progs is None:
+	if old_progs is None:
 		logger.log("no config file loaded")
 		print "NO CONFIG FILE LOADED"
 		return None
