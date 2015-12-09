@@ -38,7 +38,7 @@ def startDaemon():
     pid = str(os.getpid())
     file(PID_FILE,'w+').write("%s\n" % pid)
 
-    def getTaskPid():
+def getTaskPid():
     try:
         pidFile = file(PID_FILE, 'r')
         pid = int(pidFile.read().strip())
