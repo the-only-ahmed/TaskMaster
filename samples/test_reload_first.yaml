@@ -1,5 +1,3 @@
-prog_should_disapear:
-    cmd: "mv run.sh run.sh"
 prog_to_reload:
     cmd: "ls -l"
     stdout: "ls.txt"
