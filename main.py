@@ -53,6 +53,10 @@ def check_fileExistance():
         exit()
 
 def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-d", "--daemon", help="run program as daemon", action="store_true")
+    args = parser.parse_args()
+    # if args.start or (not args.stop and not args.restart):
     print "BEGIN TASKMASTER"
     logger.log("BEGIN TASKMASTER")
     signal.signal(signal.SIGINT, signal_handler)
