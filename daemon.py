@@ -1,3 +1,5 @@
+PID_FILE = "/tmp/taskmaster.pid"
+
 def startDaemon():
     try:
         pid = os.fork()
