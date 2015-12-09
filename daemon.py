@@ -1,6 +1,8 @@
 import os
 import sys
 
+from colors import Scolors
+
 PID_FILE = "/tmp/taskmaster.pid"
 DEV_NULL = "/dev/null"
 
