@@ -56,11 +56,10 @@ def main():
     parser.add_argument("-c", "--colors", help="add colors to shell", action="store_true")
     parser.add_argument("-f", "--file", help="add configuration file", nargs=1)
     args = parser.parse_args()
-
-	fd = check_fileExistance(args.file)
-	global progs
-	progs = ProgramList(fd)
-	progs.launch()
+    fd = check_fileExistance(args.file)
+    global progs
+    progs = ProgramList(fd)
+    progs.launch()
 
     print "BEGIN TASKMASTER"
     logger.log("BEGIN TASKMASTER")
