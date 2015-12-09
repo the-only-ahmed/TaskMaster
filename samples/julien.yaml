@@ -1,0 +1,40 @@
+loop:
+    cmd: "sleep 4 ;tail -f ls.txt"
+    autostart: true
+    autorestart: unexpected
+    starttime: 0
+    startretries: 0
+    stopsignal: TERM
+    killtime: 0
+    numprocs: 1
+    exitcodes:
+        - 0
+        - 1
+        - -1
+    stdout: tmp/loodasdsap.log
+    stderr: tmp/loop.error.log
+    env:
+        STARTED_BY: taskmaster
+        ANSWER: 42
+    workingdir: tmp
+    umask: 022
+loop2:
+    cmd: "ruby /nfs/zfs-student-2/users/jchenaf/rendu/RENDU/taskmaster/wd/loop1.rb"
+    autostart: true
+    autorestart: unexpected
+    starttime: 0
+    startretries: 0
+    stopsignal: TERM
+    killtime: 0
+    numprocs: 1
+    exitcodes:
+        - 0
+        - 1
+        - -1
+    stdout: tmp/loodasdsap.log
+    stderr: tmp/loop.error.log
+    env:
+        STARTED_BY: taskmaster
+        ANSWER: 42
+    workingdir: tmp
+    umask: 022
