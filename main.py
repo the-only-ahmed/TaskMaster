@@ -65,7 +65,7 @@ def main():
     fd = None
     if args.stop:
         taskMasterStop()
-    if conf["args"].daemon:
+    if args.daemon:
         daemonize()
     if (args.file != None):
         fd = check_fileExistance(args.file[0])
