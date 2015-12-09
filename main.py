@@ -65,6 +65,7 @@ def main():
     fd = None
     if args.stop:
         taskMasterStop()
+        return
     if args.daemon:
         daemonize()
     if (args.file != None):
